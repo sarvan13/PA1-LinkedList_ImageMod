@@ -52,7 +52,7 @@ void Grid::rotateR(int r, int count) {
 
   //Rotate left if negative
   else {
-     r = r * (-1);
+     count = count * (-1);
      for (int i = 0; i < count; i++) { 
        Node * curr = headOfRow_[r];
        //Nodes that will be the last Node's (head->right)
@@ -79,10 +79,17 @@ void Grid::rotateR(int r, int count) {
       //Change the head of the row to be the last Node
       headOfRow_[r] = headOfRow_[r]->right;
     }
-     
   }
-
-  cout << "Rotated Row" << endl; 
+  //If it is the 0th row then we are moving around the
+  //column heads, so we must also change those pointers
+  if (r == 0) {
+    Node * temp = headOfRow_[0];
+    for (int i = 0; i < numCols(); i++) {
+      headOfCol_[i] = temp;
+      temp = temp->right;
+    }
+  }
+//  cout << "Rotated Row" << endl; 
 }
 
 /**
@@ -124,7 +131,7 @@ void Grid::rotateC(int c, int count) {
 
   //Rotate Up if negative
   else {
-    c = c * (-1);
+    count = count * (-1);
     for (int i = 0; i < count; i++) { 
       Node * curr = headOfCol_[c];
       //Nodes that will be the last Node's (head->down)
@@ -150,8 +157,16 @@ void Grid::rotateC(int c, int count) {
       headOfCol_[c] = headOfCol_[c]->down;
     } 
   }
-
-  cout << "Rotated Col" << endl; 
+  //If it is the 0th col then we are moving around the
+  //row heads, so we must also change those pointers
+  if (c == 0) {
+    Node * temp = headOfCol_[0];
+    for (int i = 0; i < numRows(); i++) {
+      headOfRow_[i] = temp;
+      temp = temp->right;
+    }
+  }
+//  cout << "Rotated Col" << endl; 
 }
 
 
@@ -167,7 +182,7 @@ void Grid::clear(){
   bheight_ = 0;
  
   for (int i = 0; i < headOfRow_.size(); i++) {
-    cout << "Clear " << i << endl;
+//    cout << "Clear " << i << endl;
     delete_row(headOfRow_[i]);
 
   }
@@ -185,7 +200,7 @@ void Grid::delete_row(Node * & curr) {
   for (int i = 0; i < numCols(); i++) {
       Node *t = curr;
       curr = curr->right;
-      cout << "Node " << t << endl;
+//      cout << "Node " << t << endl;
       delete t;
   }  
  /*  if ( i == numCols() - 1) {
