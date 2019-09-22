@@ -3,15 +3,15 @@
 /**
  * Returns the width of the block.
  */
-int Block::width() const{/*your code here*/
-  return w;
+int Block::width() const{
+  return data[0].size();
 }
 
 /**
  * Returns the height of the block.
  */
 int Block::height() const{/*your code here*/
-  return h;
+  return data.size();
 }
 
 /**
@@ -24,26 +24,28 @@ Block::Block() {/* nothing */}
  * Makes a block from the rectangle of width by height pixels in im
  * whose upper-left corner is at position (x,y).
  */
-Block::Block(PNG & im, int x, int y, int width, int height) {/*your code here*/
-  w = width;
-  h = height;
-  this->x = x;
-  this->y = y;
-  image_ref = im;
+Block::Block(PNG & im, int x, int y, int width, int height){ 
+  for (int j = 0; j < height; j++){
+    vector<HSLAPixel> temp;
+    for (int i = 0; i < width; i++){
+      temp.push_back(*(im.getPixel(x+i,y+j)));
+    }
+    data.push_back(temp);
+  }
 }
 
 /**
  * Draws the block at position (x,y) in the image im
  */
 void Block::render(PNG & im, int x, int y) const {/*your code here*/
-  for (int i = 0; i < w; i++) {
-    for (int j = 0; j < h; j++) {
+  for (int i = 0; i < width(); i++) {
+    for (int j = 0; j < height(); j++) {
       HSLAPixel * pixel = im.getPixel(x + i, y + j);
       //Copy pixel from one image to the other
-      pixel->h = image_ref.getPixel(this->x + i, this->y + j)->h;
-      pixel->s = image_ref.getPixel(this->x + i, this->y + j)->s;
-      pixel->l = image_ref.getPixel(this->x + i, this->y + j)->l;
-      pixel->a = image_ref.getPixel(this->x + i, this->y + j)->a;
+      pixel->h = data[j][i].h; 
+      pixel->s = data[j][i].s; 
+      pixel->l = data[j][i].l; 
+      pixel->a = data[j][i].a; 
 
       if (gray_flag == 0) {
         pixel->s = 0.0;
