@@ -20,6 +20,8 @@ Grid::~Grid(){
  * Rotate headOfCol_ if necessary.
  */
 void Grid::rotateR(int r, int count) {
+  r = r % numRows();
+  if (r >= numRows() || r < 0) return;
   //Rotate right if positive
   if (count >= 0) {
     for (int i = 0; i < count; i++) { 
@@ -99,6 +101,8 @@ void Grid::rotateR(int r, int count) {
  * Rotate headOfRow_ if necessary.
  */
 void Grid::rotateC(int c, int count) {
+  c = c % numCols();
+  if (c >= numCols() || c < 0) return;
   //Rotate down if positive
   if (count >= 0) {
     for (int i = 0; i < count; i++) { 
@@ -163,7 +167,7 @@ void Grid::rotateC(int c, int count) {
     Node * temp = headOfCol_[0];
     for (int i = 0; i < numRows(); i++) {
       headOfRow_[i] = temp;
-      temp = temp->right;
+      temp = temp->down;
     }
   }
 //  cout << "Rotated Col" << endl; 
@@ -200,7 +204,7 @@ void Grid::delete_row(Node * & curr) {
   for (int i = 0; i < numCols(); i++) {
       Node *t = curr;
       curr = curr->right;
-//      cout << "Node " << t << endl;
+      cout << "Node " << t << endl;
       delete t;
   }  
  /*  if ( i == numCols() - 1) {
@@ -219,11 +223,11 @@ void Grid::delete_row(Node * & curr) {
  */
 void Grid::copy(Grid const& other) { /*your code here*/
   //Clear self
-  this->clear();
+ // this->clear();
 
   //Copy 'other' to self
-  bheight_ = other.bheight_;
-  bwidth_ = other.bwidth_;
+  bheight_ = other.bheight();
+  bwidth_ = other.bwidth();
 
   // Set up a temporary two-dimensional vector of ptrs to Nodes containing
   // the correct sub-blocks of the image.
@@ -233,8 +237,9 @@ void Grid::copy(Grid const& other) { /*your code here*/
     Node * temp_node = other.headOfRow_[j];
     for( int i=0; i<other.numCols(); i++ ) {
       Node* p = new Node(temp_node->block);
-      temp_node = temp_node->right;
+//      temp_node = temp_node->right;
       temp.push_back(p);
+      temp_node = temp_node->right;
     }
     A.push_back(temp);
   }

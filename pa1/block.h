@@ -29,6 +29,5 @@ class Block{
  private:
 
   vector< vector < HSLAPixel > > data;
-  int gray_flag = -1;
 };
 #endif

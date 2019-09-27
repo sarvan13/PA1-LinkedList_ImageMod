@@ -46,10 +46,6 @@ void Block::render(PNG & im, int x, int y) const {/*your code here*/
       pixel->s = data[j][i].s; 
       pixel->l = data[j][i].l; 
       pixel->a = data[j][i].a; 
-
-      if (gray_flag == 0) {
-        pixel->s = 0.0;
-      }
     }
   } 
 }
@@ -59,5 +55,9 @@ void Block::render(PNG & im, int x, int y) const {/*your code here*/
  * which removes the color, leaving grey.
  */
 void Block::greyscale() {/*your code here*/
-  gray_flag = 0;
+  for (int i = 0; i < width(); i++) {
+    for (int j = 0; j < height(); j++) {
+      data[j][i].s = 0.0;
+    }
+  }
 }
