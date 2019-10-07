@@ -11,6 +11,8 @@ git clone https://github.com/sarvan13/PA1-LinkedList_ImageMod.git
 ```
 
 ## Running
+Make sure to install clang++ to compile the code. 
+
 ```
 cd pa1/
 make
